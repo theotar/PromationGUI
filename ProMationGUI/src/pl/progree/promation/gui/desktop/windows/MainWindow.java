@@ -30,7 +30,7 @@ public class MainWindow extends JFrame {
 	private PromationGUI gui;
 	
 	private JPanel northPanel;
-	private JPanel leftPanel;
+	
 	private JTree tree;
 	private JScrollPane treeScrollPane;
 	

@@ -9,9 +9,13 @@ import java.awt.Dimension;
 import java.awt.HeadlessException;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTree;
 import javax.swing.border.MatteBorder;
 
 import pl.progree.promation.Promation;
@@ -24,6 +28,12 @@ import pl.progree.promation.gui.desktop.PromationGUI;
 public class MainWindow extends JFrame {
 	
 	private PromationGUI gui;
+	
+	private JPanel northPanel;
+	private JPanel leftPanel;
+	private JTree tree;
+	private JScrollPane treeScrollPane;
+	
 	/**
 	 * 
 	 */
@@ -59,7 +69,7 @@ public class MainWindow extends JFrame {
 	private void initComponents(){
 		this.getContentPane().setLayout(new BorderLayout());
 		this.initMenu();
-		//this.initNorthPanel();
+		this.initNorthPanel();
 		
 	}
 	private void initMenu(){
@@ -68,8 +78,21 @@ public class MainWindow extends JFrame {
 		JMenuItem miNowy=new JMenuItem("Nowy...");
 		menuPlik.add(miNowy);
 		menubar.add(menuPlik);
+
 		menubar.setBorder(new MatteBorder(0, 0, 1, 0, Color.DARK_GRAY));
 		this.setJMenuBar(menubar);	
+	}
+	/**
+	 * Metoda inicjuj¹ca northPanel
+	 * @see #northPanel
+	 */
+	private void initNorthPanel(){
+		this.northPanel=new JPanel(new BorderLayout());
+		Dimension size=new Dimension(1000, 50);
+		this.northPanel.setPreferredSize(size);
+		this.northPanel.setMinimumSize(size);
+		this.northPanel.add(new JLabel("Tu bêdzie toolbar"));
+		this.getContentPane().add(this.northPanel,BorderLayout.NORTH);
 	}
 	public PromationGUI getGUI() {
 		return gui;

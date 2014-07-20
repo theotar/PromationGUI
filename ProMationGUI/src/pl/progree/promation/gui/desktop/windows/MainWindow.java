@@ -7,19 +7,25 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.HeadlessException;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
 import javax.swing.JTree;
 import javax.swing.border.MatteBorder;
 
 import pl.progree.promation.Promation;
 import pl.progree.promation.gui.desktop.PromationGUI;
+import pl.progree.promation.gui.swing.trees.MainTree;
+import pl.progree.promation.gui.swing.trees.MainTreeModel;
 
 /**
  * @author Wojciech Pierzchalski, Progree
@@ -27,23 +33,24 @@ import pl.progree.promation.gui.desktop.PromationGUI;
  */
 public class MainWindow extends JFrame {
 	
-	private PromationGUI gui;
+	private PromationGUI promation;
 	
 	private JPanel northPanel;
 	
-	private JTree tree;
+	private MainTree tree;
 	private JScrollPane treeScrollPane;
+	private JSplitPane horizontalSplitPane;
 	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	/**
-	 * @param gUI
+	 * @param promation
 	 * @throws HeadlessException
 	 */
-	public MainWindow(PromationGUI gUI) throws HeadlessException {
-		gui = gUI;
+	public MainWindow(PromationGUI promation) throws HeadlessException {
+		this.promation = promation;
 		
 		this.setTitle("ProMation");
 		//this.setIconImage(Toolkit.getDefaultToolkit().getImage(PromationGUI.class.getResource("/gui/res/EdGraf.png")));
@@ -70,17 +77,39 @@ public class MainWindow extends JFrame {
 		this.getContentPane().setLayout(new BorderLayout());
 		this.initMenu();
 		this.initNorthPanel();
+		this.initHorizontalSplitPane();
 		
 	}
 	private void initMenu(){
 		JMenuBar menubar=new JMenuBar();
 		JMenu menuPlik=new JMenu("Plik");
-		JMenuItem miNowy=new JMenuItem("Nowy...");
+		JMenuItem miNowy=new JMenuItem("Nowy Projekt");
+		miNowy.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				MainWindow.this.nowyProjekt();
+			}
+		});
 		menuPlik.add(miNowy);
 		menubar.add(menuPlik);
 
 		menubar.setBorder(new MatteBorder(0, 0, 1, 0, Color.DARK_GRAY));
 		this.setJMenuBar(menubar);	
+	}
+	private void initHorizontalSplitPane(){
+		this.tree=new MainTree(this.getPromation());
+		this.treeScrollPane=new JScrollPane(tree);
+		JPanel testPanel=new JPanel();
+		this.horizontalSplitPane=new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, this.treeScrollPane, testPanel);
+		//this.verticalSplitPane.setOneTouchExpandable(true);
+		//this.verticalSplitPane.setDividerLocation(150);
+		Dimension minimumSize = new Dimension(100, 50);
+		this.tree.setMinimumSize(minimumSize);
+		testPanel.setMinimumSize(minimumSize);
+		this.horizontalSplitPane.setPreferredSize(new Dimension(400, 200));
+        
+		this.getContentPane().add(this.horizontalSplitPane, BorderLayout.CENTER);
 	}
 	/**
 	 * Metoda inicjuj¹ca northPanel
@@ -94,16 +123,17 @@ public class MainWindow extends JFrame {
 		this.northPanel.add(new JLabel("Tu bêdzie toolbar"));
 		this.getContentPane().add(this.northPanel,BorderLayout.NORTH);
 	}
-	public PromationGUI getGUI() {
-		return gui;
-	}
 	public Promation getPromation() {
-		return gui.getPromation();
+		return this.promation;
 	}
-	public void setGUI(PromationGUI gUI) {
-		gui = gUI;
+	public void nowyProjekt(){
+		String nazwaProjektu=JOptionPane.showInputDialog(this, "Podaj nazwê");
+		if(nazwaProjektu==null) return;
+		nazwaProjektu=nazwaProjektu.trim();
+		if(!nazwaProjektu.isEmpty()){
+			
+		}
 	}
-	
 	
 	
 	

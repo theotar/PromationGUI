@@ -10,10 +10,9 @@ import pl.progree.promation.gui.desktop.windows.MainWindow;
  * @author Progree
  *
  */
-public class PromationGUI {
+public class PromationGUI extends Promation{
 	
 	private MainWindow mainWindow;
-	private Promation promation;
 	
 	protected void createMainWindow(){
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
@@ -44,22 +43,5 @@ public class PromationGUI {
 	protected void setMainWindow(MainWindow mainWindow) {
 		this.mainWindow = mainWindow;
 	}
-
-	/**
-	 * @return the promation
-	 */
-	public Promation getPromation() {
-		return promation;
-	}
-
-	/**
-	 * @param promation the promation to set
-	 */
-	public void setPromation(Promation promation) {
-		this.promation = promation;
-	}
-	
-
-	
 
 }

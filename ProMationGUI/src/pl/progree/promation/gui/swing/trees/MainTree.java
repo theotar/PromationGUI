@@ -3,6 +3,8 @@
  */
 package pl.progree.promation.gui.swing.trees;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -14,6 +16,8 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import pl.progree.promation.Promation;
+import pl.progree.promation.gui.desktop.PromationGUI;
+import pl.progree.promation.gui.desktop.windows.MainWindow;
 
 /**
  * @author Wojciech Pierzchalski, Progree
@@ -25,13 +29,13 @@ public class MainTree extends JTree {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+	private PromationGUI promationGUI;
 	private JPopupMenu promationMenu;
 	
-	public MainTree(Promation promation) {
+	public MainTree(PromationGUI promation) {
 		super(new MainTreeModel(promation));
-		this.promationMenu=new JPopupMenu("Promation");
-		this.promationMenu.add(new JMenuItem("Dupa"));
+		this.promationGUI=promation;
+		this.initMenu();
 		this.addTreeSelectionListener(new TreeSelectionListener() {
 			
 			@Override
@@ -42,22 +46,18 @@ public class MainTree extends JTree {
 				
 			}
 		});
-//		this.addMouseListener(new MouseAdapter() {
-//			@Override
-//			public void mousePressed(MouseEvent e) {
-//				this.showPopupMenu(e);
-//			}
-//			@Override
-//			public void mouseReleased(MouseEvent e) {
-//				this.showPopupMenu(e);
-//			}
-//			private void showPopupMenu(MouseEvent e){
-//				if(e.isPopupTrigger()) {
-//					System.err.println("works!");
-//					MainTree.this.getPromationMenu().show(MainTree.this, e.getX(), e.getY());
-//				}
-//			}
-//		});
+	}
+	private void initMenu(){
+		this.promationMenu=new JPopupMenu("Promation");
+		JMenuItem miNowy=new JMenuItem("Nowy Projekt");
+		miNowy.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				MainTree.this.promationGUI.getMainWindow().nowyProjekt();
+			}
+		});
+		this.promationMenu.add(miNowy);
 	}
 
 	public JPopupMenu getPromationMenu() {

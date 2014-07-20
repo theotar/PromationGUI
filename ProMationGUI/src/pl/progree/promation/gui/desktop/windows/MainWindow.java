@@ -74,10 +74,10 @@ public class MainWindow extends JFrame {
 	}
 	private void initComponents(){
 		this.getContentPane().setLayout(new BorderLayout());
-		this.initMenu();
 		this.initNorthPanel();
 		this.initHorizontalSplitPane();
 		
+		this.initMenu();//ostatni init ze wzgledu na jpopupy
 	}
 	private void initMenu(){
 		JMenuBar menubar=new JMenuBar();
@@ -90,6 +90,7 @@ public class MainWindow extends JFrame {
 				MainWindow.this.nowyProjekt();
 			}
 		});
+		
 		menuPlik.add(miNowy);
 		menubar.add(menuPlik);
 
@@ -97,7 +98,7 @@ public class MainWindow extends JFrame {
 		this.setJMenuBar(menubar);	
 	}
 	private void initHorizontalSplitPane(){
-		this.tree=new MainTree(this.getPromation());
+		this.tree=new MainTree(this.promation);
 		this.treeScrollPane=new JScrollPane(tree);
 		JPanel testPanel=new JPanel();
 		this.horizontalSplitPane=new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, this.treeScrollPane, testPanel);

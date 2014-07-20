@@ -19,13 +19,12 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
-import javax.swing.JTree;
 import javax.swing.border.MatteBorder;
 
 import pl.progree.promation.Promation;
 import pl.progree.promation.gui.desktop.PromationGUI;
 import pl.progree.promation.gui.swing.trees.MainTree;
-import pl.progree.promation.gui.swing.trees.MainTreeModel;
+import pl.progree.promation.projekt.Projekt;
 
 /**
  * @author Wojciech Pierzchalski, Progree
@@ -131,7 +130,8 @@ public class MainWindow extends JFrame {
 		if(nazwaProjektu==null) return;
 		nazwaProjektu=nazwaProjektu.trim();
 		if(!nazwaProjektu.isEmpty()){
-			
+			Projekt p=new Projekt(nazwaProjektu);
+			this.getPromation().addProjekt(p);
 		}
 	}
 	

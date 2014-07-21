@@ -9,6 +9,8 @@ import java.awt.Dimension;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.HashSet;
+import java.util.TreeSet;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -20,6 +22,9 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.border.MatteBorder;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
+import javax.swing.tree.DefaultMutableTreeNode;
 
 import pl.progree.promation.Promation;
 import pl.progree.promation.gui.desktop.PromationGUI;
@@ -31,8 +36,35 @@ import pl.progree.promation.projekt.Projekt;
  *
  */
 public class MainWindow extends JFrame {
+	private class MenuItemList extends HashSet<JMenuItem> implements TreeSelectionListener{
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+
+		@Override
+		public void valueChanged(TreeSelectionEvent e) {
+			DefaultMutableTreeNode node=(DefaultMutableTreeNode) e.getPath().getLastPathComponent();
+			if(node.getUserObject() instanceof Projekt) MainWindow.this.menuItemsEnabledOnProjectSelection.enableAll();
+			else  MainWindow.this.menuItemsEnabledOnProjectSelection.disableAll();
+			
+		}
+		public void disableAll(){
+			for (JMenuItem jMenuItem : menuItemsEnabledOnProjectSelection) {
+				jMenuItem.setEnabled(false);
+			}
+		}
+		public void enableAll(){
+			for (JMenuItem jMenuItem : menuItemsEnabledOnProjectSelection) {
+				jMenuItem.setEnabled(true);
+			}
+		}
+		
+		
+	}
 	
 	private PromationGUI promation;
+	private MenuItemList menuItemsEnabledOnProjectSelection;
 	
 	private JPanel northPanel;
 	
@@ -50,6 +82,7 @@ public class MainWindow extends JFrame {
 	 */
 	public MainWindow(PromationGUI promation) throws HeadlessException {
 		this.promation = promation;
+		this.menuItemsEnabledOnProjectSelection=new MenuItemList();
 		
 		this.setTitle("ProMation");
 		//this.setIconImage(Toolkit.getDefaultToolkit().getImage(PromationGUI.class.getResource("/gui/res/EdGraf.png")));
@@ -90,15 +123,27 @@ public class MainWindow extends JFrame {
 				MainWindow.this.nowyProjekt();
 			}
 		});
-		
 		menuPlik.add(miNowy);
+		
+		JMenuItem miZapisz=new JMenuItem("Zapisz");
+		miZapisz.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				MainWindow.this.nowyProjekt();
+			}
+		});
+		this.menuItemsEnabledOnProjectSelection.add(miZapisz);
+		menuPlik.add(miZapisz);
 		menubar.add(menuPlik);
 
 		menubar.setBorder(new MatteBorder(0, 0, 1, 0, Color.DARK_GRAY));
-		this.setJMenuBar(menubar);	
+		this.setJMenuBar(menubar);
+		this.menuItemsEnabledOnProjectSelection.disableAll();
 	}
 	private void initHorizontalSplitPane(){
 		this.tree=new MainTree(this.promation);
+		this.tree.addTreeSelectionListener(this.menuItemsEnabledOnProjectSelection);
 		this.treeScrollPane=new JScrollPane(tree);
 		JPanel testPanel=new JPanel();
 		this.horizontalSplitPane=new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, this.treeScrollPane, testPanel);

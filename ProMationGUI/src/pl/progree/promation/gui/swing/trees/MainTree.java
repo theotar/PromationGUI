@@ -73,7 +73,11 @@ public class MainTree extends JTree {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				MainTree.this.promationGUI.getMainWindow().nowyProjekt();
+				Object o=MainTree.this.getSelectionPath().getLastPathComponent();
+				if(o==null) return;
+				DefaultMutableTreeNode node=(DefaultMutableTreeNode) o;
+				if(node.getUserObject() instanceof Projekt) 
+					MainTree.this.promationGUI.getMainWindow().zapiszProjekt((Projekt) node.getUserObject());
 			}
 		});
 		this.projektMenu.add(miZapisz);

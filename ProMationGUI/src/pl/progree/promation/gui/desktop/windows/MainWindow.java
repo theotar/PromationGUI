@@ -130,7 +130,11 @@ public class MainWindow extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				MainWindow.this.nowyProjekt();
+				Object o=MainWindow.this.tree.getSelectionPath().getLastPathComponent();
+				if(o==null) return;
+				DefaultMutableTreeNode node=(DefaultMutableTreeNode) o;
+				if(node.getUserObject() instanceof Projekt) 
+					MainWindow.this.zapiszProjekt((Projekt) node.getUserObject());
 			}
 		});
 		this.menuItemsEnabledOnProjectSelection.add(miZapisz);
@@ -148,11 +152,11 @@ public class MainWindow extends JFrame {
 		JPanel testPanel=new JPanel();
 		this.horizontalSplitPane=new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, this.treeScrollPane, testPanel);
 		//this.verticalSplitPane.setOneTouchExpandable(true);
-		//this.verticalSplitPane.setDividerLocation(150);
+		this.horizontalSplitPane.setDividerLocation(300);
 		Dimension minimumSize = new Dimension(100, 50);
 		this.tree.setMinimumSize(minimumSize);
 		testPanel.setMinimumSize(minimumSize);
-		this.horizontalSplitPane.setPreferredSize(new Dimension(400, 200));
+		this.horizontalSplitPane.setPreferredSize(new Dimension(800, 200));
         
 		this.getContentPane().add(this.horizontalSplitPane, BorderLayout.CENTER);
 	}
@@ -179,6 +183,10 @@ public class MainWindow extends JFrame {
 			Projekt p=new Projekt(nazwaProjektu);
 			this.getPromation().addProjekt(p);
 		}
+	}
+	public void zapiszProjekt(Projekt projekt){
+		if(projekt.getPlik()==null) return;
+		else this.getPromation().saveProjektToFile(projekt, projekt.getPlik());
 	}
 	
 	

@@ -12,6 +12,7 @@ import javax.swing.JTree;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreeModel;
 
 import pl.progree.promation.gui.desktop.PromationGUI;
 import pl.progree.promation.gui.desktop.windows.MainWindow;
@@ -30,6 +31,7 @@ public class MainTree extends JTree {
 	private PromationGUI promationGUI;
 	private JPopupMenu promationMenu;
 	private JPopupMenu projektMenu;
+	private JPopupMenu szafySystemoweMenu;
 	
 	public MainTree(PromationGUI promation) {
 		super(new MainTreeModel(promation));
@@ -42,6 +44,7 @@ public class MainTree extends JTree {
 				DefaultMutableTreeNode node=(DefaultMutableTreeNode) e.getPath().getLastPathComponent();
 				if(node.isRoot()) MainTree.this.setComponentPopupMenu(MainTree.this.promationMenu);
 				else if(node.getUserObject() instanceof Projekt) MainTree.this.setComponentPopupMenu(MainTree.this.projektMenu);
+				else if(node.getUserObject().equals("Szafy Systemowe")) MainTree.this.setComponentPopupMenu(MainTree.this.szafySystemoweMenu);
 				else MainTree.this.setComponentPopupMenu(null);
 				
 			}
@@ -50,6 +53,7 @@ public class MainTree extends JTree {
 	private void initMenu(){
 		this.initPromationMenu();
 		this.initProjektMenu();
+		this.initSzafySystemoweMenu();
 	}
 	private void initPromationMenu(){
 		this.promationMenu=new JPopupMenu("Promation");
@@ -88,6 +92,23 @@ public class MainTree extends JTree {
 		});
 		this.projektMenu.add(miZapisz);
 	}
+	private void initSzafySystemoweMenu(){
+		this.szafySystemoweMenu=new JPopupMenu("Szafy Systemowe");
+		JMenuItem miDodaj=new JMenuItem("Dodaj Szafê");
+		miDodaj.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Object o=MainTree.this.getSelectionPath().getLastPathComponent();
+				if(o==null) return;
+				DefaultMutableTreeNode node=(DefaultMutableTreeNode) o;
+				if(node.getUserObject().equals("Szafy Systemowe")) 
+					MainTree.this.promationGUI.getMainWindow().dodajSzafeSystemowa(MainTree.this.getModel().getProjekt(node));
+			}
+		});
+		this.szafySystemoweMenu.add(miDodaj);
+		
+	}
 
 	public JPopupMenu getPromationMenu() {
 		return promationMenu;
@@ -96,6 +117,9 @@ public class MainTree extends JTree {
 	public void setPromationMenu(JPopupMenu promationMenu) {
 		this.promationMenu = promationMenu;
 	}
-	
+	@Override
+	public MainTreeModel getModel() {
+		return (MainTreeModel) super.getModel();
+	}
 
 }

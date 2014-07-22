@@ -30,7 +30,11 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import pl.progree.promation.Promation;
 import pl.progree.promation.gui.desktop.PromationGUI;
 import pl.progree.promation.gui.swing.trees.MainTree;
+import pl.progree.promation.kks.StringKKS;
 import pl.progree.promation.projekt.Projekt;
+import pl.progree.promation.system.SzafaSystemowa;
+import pl.progree.promation.system.SzafaSystemowaFactory;
+import pl.progree.promation.templates.SzafaSystemowaTemplateFactory;
 
 /**
  * @author Wojciech Pierzchalski, Progree
@@ -201,6 +205,15 @@ public class MainWindow extends JFrame {
 	public void otworzProjekt(){
 		File plik=new File("E:\\TEMP\\dupa.pro");
 		this.promation.loadProjektFromFile(plik);
+	}
+	public void dodajSzafeSystemowa(Projekt projekt){
+		String kksSzafy=JOptionPane.showInputDialog(this, "Podaj kks szafy");
+		if(kksSzafy==null) return;
+		kksSzafy=kksSzafy.trim();
+		if(!kksSzafy.isEmpty()){
+			//TODO zaimplementowac szablony szaf systemowych
+			this.getPromation().addSzafaSystemowa(projekt, SzafaSystemowaFactory.create(new StringKKS(kksSzafy), SzafaSystemowaTemplateFactory.getDefaultTemplates().iterator().next()));
+		}
 	}
 	
 	

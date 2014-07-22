@@ -14,6 +14,7 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import pl.progree.promation.gui.desktop.PromationGUI;
+import pl.progree.promation.gui.desktop.windows.MainWindow;
 import pl.progree.promation.projekt.Projekt;
 
 /**
@@ -61,6 +62,15 @@ public class MainTree extends JTree {
 			}
 		});
 		this.promationMenu.add(miNowy);
+		JMenuItem miOtworz=new JMenuItem("Otwórz Projekt");
+		miOtworz.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				MainTree.this.promationGUI.getMainWindow().otworzProjekt();
+			}
+		});
+		this.promationMenu.add(miOtworz);
 	}
 	private void initProjektMenu(){
 		this.projektMenu=new JPopupMenu("Projekt");

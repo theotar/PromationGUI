@@ -17,7 +17,7 @@ import pl.progree.promation.projekt.Projekt;
  */
 public class MainTreeModel extends DefaultTreeModel implements PromationListener{
 	private static class INDEKSY_PROJEKTU{
-		private static int SYSTEM=0;
+		private static int SZAFY_SYSTEMOWE=0;
 	}
 	private Promation promation;
 
@@ -27,12 +27,12 @@ public class MainTreeModel extends DefaultTreeModel implements PromationListener
 	private static final long serialVersionUID = 1L;
 	private DefaultMutableTreeNode createProjektNode(Projekt projekt){
 		DefaultMutableTreeNode projektNode=new DefaultMutableTreeNode(projekt, true);
-		this.createSystemNode(projektNode);
+		this.createSzafySystemoweNode(projektNode);
 		return projektNode;
 	}
-	private void createSystemNode(DefaultMutableTreeNode projektNode){
-		DefaultMutableTreeNode systemNode=new DefaultMutableTreeNode("System", true);
-		projektNode.add(systemNode);
+	private void createSzafySystemoweNode(DefaultMutableTreeNode projektNode){
+		DefaultMutableTreeNode szafyNode=new DefaultMutableTreeNode("Szafy systemowe", true);
+		projektNode.add(szafyNode);
 	}
 
 	

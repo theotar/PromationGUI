@@ -5,8 +5,6 @@ package pl.progree.promation.gui.swing.trees;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
@@ -15,9 +13,7 @@ import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import pl.progree.promation.Promation;
 import pl.progree.promation.gui.desktop.PromationGUI;
-import pl.progree.promation.gui.desktop.windows.MainWindow;
 import pl.progree.promation.projekt.Projekt;
 
 /**

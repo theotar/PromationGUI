@@ -9,6 +9,7 @@ import java.awt.Dimension;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.util.HashSet;
 import java.util.TreeSet;
 
@@ -124,6 +125,15 @@ public class MainWindow extends JFrame {
 			}
 		});
 		menuPlik.add(miNowy);
+		JMenuItem miOtworz=new JMenuItem("Otwórz Projekt");
+		miOtworz.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				MainWindow.this.otworzProjekt();
+			}
+		});
+		menuPlik.add(miOtworz);
 		
 		JMenuItem miZapisz=new JMenuItem("Zapisz");
 		miZapisz.addActionListener(new ActionListener() {
@@ -187,6 +197,10 @@ public class MainWindow extends JFrame {
 	public void zapiszProjekt(Projekt projekt){
 		if(projekt.getPlik()==null) return;
 		else this.getPromation().saveProjektToFile(projekt, projekt.getPlik());
+	}
+	public void otworzProjekt(){
+		File plik=new File("E:\\TEMP\\dupa.pro");
+		this.promation.loadProjektFromFile(plik);
 	}
 	
 	

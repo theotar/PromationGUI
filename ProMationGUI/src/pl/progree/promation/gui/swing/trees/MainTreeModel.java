@@ -11,6 +11,7 @@ import pl.progree.promation.event.PromationListener;
 import pl.progree.promation.event.PromationeEvent;
 import pl.progree.promation.kks.ListaKKS;
 import pl.progree.promation.projekt.Projekt;
+import pl.progree.promation.system.Modul;
 import pl.progree.promation.system.SzafaSystemowa;
 import pl.progree.promation.system.SzafaSystemowa.Slot;
 
@@ -32,6 +33,7 @@ public class MainTreeModel extends DefaultTreeModel implements PromationListener
 	private DefaultMutableTreeNode createProjektNode(Projekt projekt){
 		DefaultMutableTreeNode projektNode=new DefaultMutableTreeNode(projekt, true);
 		this.createSzafySystemoweNode(projektNode);
+		this.createModulyNode(projektNode);
 		return projektNode;
 	}
 	private void createSzafySystemoweNode(DefaultMutableTreeNode projektNode){
@@ -47,11 +49,11 @@ public class MainTreeModel extends DefaultTreeModel implements PromationListener
 	private void createModulyNode(DefaultMutableTreeNode projektNode){
 		DefaultMutableTreeNode modulyNode=new DefaultMutableTreeNode("Modu³y", true);
 		projektNode.add(modulyNode);
-		ListaKKS<SzafaSystemowa> moduly = ((Projekt) projektNode.getUserObject()).getM;//MODULY
-		DefaultMutableTreeNode szafaNode;
-		for (SzafaSystemowa szafaSystemowa : szafy) {
-			szafaNode=this.createSzafaSystemowaNode(szafaSystemowa);
-			modulyNode.add(szafaNode);
+		ListaKKS<Modul> moduly = ((Projekt) projektNode.getUserObject()).getModuly();//MODULY
+		DefaultMutableTreeNode modulNode;
+		for (Modul modul : moduly) {
+			modulNode=this.createModulNode(modul);
+			modulyNode.add(modulNode);
 		}
 	}
 	private DefaultMutableTreeNode createSzafaSystemowaNode(SzafaSystemowa szafa){
@@ -71,6 +73,14 @@ public class MainTreeModel extends DefaultTreeModel implements PromationListener
 		for(int i=0;i<root.getChildCount();i++)
 			if(((DefaultMutableTreeNode)root.getChildAt(i)).getUserObject().equals(projekt)) return (DefaultMutableTreeNode) root.getChildAt(i);
 		return null;
+	}
+	private DefaultMutableTreeNode createModulNode(Modul modul){
+		DefaultMutableTreeNode modulNode=new DefaultMutableTreeNode(modul, true);
+//		ListaKKS<Slot> sloty = szafa.getSloty();
+//		for (Slot slot : sloty) {
+//			szafaNode.add(this.createSlotNode(slot));
+//		}TU BEDA KANALY
+		return modulNode;
 	}
 
 	
@@ -102,6 +112,11 @@ public class MainTreeModel extends DefaultTreeModel implements PromationListener
 	public void szafaSystemowaAdded(PromationeEvent e) {
 		DefaultMutableTreeNode szafyNode=(DefaultMutableTreeNode) this.getProjektNode(e.getProjekt()).getChildAt(MainTreeModel.INDEKSY_PROJEKTU.SZAFY_SYSTEMOWE);
 		this.insertNodeInto(this.createSzafaSystemowaNode(e.getSzafaSystemowa()), szafyNode, szafyNode.getChildCount());
+	}
+	@Override
+	public void modulAdded(PromationeEvent e) {
+		DefaultMutableTreeNode modulyNode=(DefaultMutableTreeNode) this.getProjektNode(e.getProjekt()).getChildAt(MainTreeModel.INDEKSY_PROJEKTU.MODULY);
+		this.insertNodeInto(this.createModulNode(e.getModul()), modulyNode, modulyNode.getChildCount());	
 	}
 	
 	

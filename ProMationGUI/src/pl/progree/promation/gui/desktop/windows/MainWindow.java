@@ -34,6 +34,7 @@ import pl.progree.promation.kks.StringKKS;
 import pl.progree.promation.projekt.Projekt;
 import pl.progree.promation.system.SzafaSystemowa;
 import pl.progree.promation.system.SzafaSystemowaFactory;
+import pl.progree.promation.system.melody.MelodyFactory;
 import pl.progree.promation.templates.SzafaSystemowaTemplateFactory;
 
 /**
@@ -213,6 +214,13 @@ public class MainWindow extends JFrame {
 		if(!kksSzafy.isEmpty()){
 			//TODO zaimplementowac szablony szaf systemowych
 			this.getPromation().addSzafaSystemowa(projekt, SzafaSystemowaFactory.create(new StringKKS(kksSzafy), SzafaSystemowaTemplateFactory.getDefaultTemplates().iterator().next()));
+		}
+	}
+	public void dodajModul(Projekt projekt){
+		MelodyFactory wybor;
+		wybor=(MelodyFactory) JOptionPane.showInputDialog(this, "Wybierz modu³", "Wybór modu³u", JOptionPane.QUESTION_MESSAGE, null, MelodyFactory.values(), MelodyFactory.CBC11);
+		if(wybor!=null){
+			this.getPromation().addModul(projekt, wybor.getInstance());
 		}
 	}
 	

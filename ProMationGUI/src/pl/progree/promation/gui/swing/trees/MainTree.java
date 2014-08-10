@@ -32,6 +32,7 @@ public class MainTree extends JTree {
 	private JPopupMenu promationMenu;
 	private JPopupMenu projektMenu;
 	private JPopupMenu szafySystemoweMenu;
+	private JPopupMenu modulyMenu;
 	
 	public MainTree(PromationGUI promation) {
 		super(new MainTreeModel(promation));
@@ -45,6 +46,7 @@ public class MainTree extends JTree {
 				if(node.isRoot()) MainTree.this.setComponentPopupMenu(MainTree.this.promationMenu);
 				else if(node.getUserObject() instanceof Projekt) MainTree.this.setComponentPopupMenu(MainTree.this.projektMenu);
 				else if(node.getUserObject().equals("Szafy Systemowe")) MainTree.this.setComponentPopupMenu(MainTree.this.szafySystemoweMenu);
+				else if(node.getUserObject().equals("Modu³y")) MainTree.this.setComponentPopupMenu(MainTree.this.modulyMenu);
 				else MainTree.this.setComponentPopupMenu(null);
 				
 			}
@@ -54,6 +56,7 @@ public class MainTree extends JTree {
 		this.initPromationMenu();
 		this.initProjektMenu();
 		this.initSzafySystemoweMenu();
+		this.initModulyMenu();
 	}
 	private void initPromationMenu(){
 		this.promationMenu=new JPopupMenu("Promation");
@@ -107,6 +110,23 @@ public class MainTree extends JTree {
 			}
 		});
 		this.szafySystemoweMenu.add(miDodaj);
+		
+	}
+	private void initModulyMenu(){
+		this.modulyMenu=new JPopupMenu("Modu³y");
+		JMenuItem miDodaj=new JMenuItem("Dodaj Modu³");
+		miDodaj.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Object o=MainTree.this.getSelectionPath().getLastPathComponent();
+				if(o==null) return;
+				DefaultMutableTreeNode node=(DefaultMutableTreeNode) o;
+				if(node.getUserObject().equals("Modu³y")) 
+					MainTree.this.promationGUI.getMainWindow().dodajModul(MainTree.this.getModel().getProjekt(node));
+			}
+		});
+		this.modulyMenu.add(miDodaj);
 		
 	}
 
